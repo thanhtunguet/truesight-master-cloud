@@ -1,24 +1,25 @@
 import { Button, Form, Input } from 'antd';
-import React from 'react';
+import React, { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { GlobalState } from '../store';
-import { rancherSlice } from '../store/rancher-slice';
+import { tokenSelector } from '../store/selectors';
+import { rancherSlice } from '../store/slices/rancher-slice';
 
-const RancherForm = () => {
-  const rancherApi = useSelector((state: GlobalState) => state.rancher.token);
+const RancherConfigPage: FC = () => {
+  const token = useSelector(tokenSelector);
   const dispatch = useDispatch();
 
-  const onFinish = (values: GlobalState['rancher']) => {
+  const handleSubmit = React.useCallback((values: GlobalState['rancher']) => {
     dispatch(rancherSlice.actions.setToken(values.token!));
-  };
+  }, []);
 
   return (
     <div className="section-container">
-      <Form onFinish={onFinish} className="p-4">
+      <Form onFinish={handleSubmit}>
         <Form.Item
           name="token"
           label="Rancher API Key"
-          initialValue={rancherApi}
+          initialValue={token}
           rules={[
             {
               required: true,
@@ -38,4 +39,4 @@ const RancherForm = () => {
   );
 };
 
-export default RancherForm;
+export default RancherConfigPage;

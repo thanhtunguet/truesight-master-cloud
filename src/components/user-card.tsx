@@ -9,8 +9,6 @@ interface UserProps {
 const UserCard: React.FunctionComponent<UserProps> = ({ user }) => {
   const [u] = user ?? [];
 
-  console.log(user);
-
   return (
     <Box flex>
       <Avatar story="default" online />

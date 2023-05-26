@@ -5,35 +5,40 @@ import { useBoolean } from 'react3l';
 import { finalize } from 'rxjs';
 import { RancherUserResponse } from '../models/user';
 import { rancherRepository } from '../repositories/rancher-repository';
-import { GlobalState } from '../store';
-import { userSlice } from '../store/user-slice';
+import { tokenSelector, userSelector } from '../store/selectors';
+import { userSlice } from '../store/slices/user-slice';
 
 export function useUser(): [RancherUserResponse['data'] | undefined, boolean] {
   const [loading, toggleLoading] = useBoolean(true);
 
-  const user = useSelector((state: GlobalState) => state.user.user);
+  const token = useSelector(tokenSelector);
+  const user = useSelector(userSelector);
 
   const dispatch = useDispatch();
 
   React.useEffect(() => {
-    const subscription = rancherRepository
-      .me()
-      .pipe(
-        finalize(() => {
-          toggleLoading();
-        }),
-      )
-      .subscribe({
-        next: (user) => {
-          dispatch(userSlice.actions.setUser(user.data));
-        },
-        error: captureException,
-      });
+    if (token) {
+      const subscription = rancherRepository
+        .me()
+        .pipe(
+          finalize(() => {
+            toggleLoading();
+          }),
+        )
+        .subscribe({
+          next: (user) => {
+            dispatch(userSlice.actions.setUser(user.data));
+          },
+          error: captureException,
+        });
 
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, []);
+      return () => {
+        subscription.unsubscribe();
+      };
+    }
+
+    return;
+  }, [token]);
 
   return [user, loading];
 }

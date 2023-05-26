@@ -1,59 +1,59 @@
-import { captureException } from '@sentry/core';
 import Spin from 'antd/lib/spin';
-import Tag from 'antd/lib/tag';
+import moment from 'moment';
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
-import { useBoolean } from 'react3l';
-import { finalize } from 'rxjs';
-import { Icon, List, Page, Text } from 'zmp-ui';
+import { firstValueFrom } from 'rxjs';
+import { Header, Icon, List, Page, useSnackbar } from 'zmp-ui';
+import EntityState from '../components/entity-state';
+import { useDeployments } from '../hooks/use-deployments';
 import { rancherRepository } from '../repositories/rancher-repository';
-import { GlobalState } from '../store';
-import { rancherSlice } from '../store/rancher-slice';
 
-const ClusterPage: React.FunctionComponent = (props) => {
+const ClusterPage: React.FunctionComponent = () => {
   const { id } = useParams();
 
-  const deployments = useSelector((state: GlobalState) => state.rancher.deployments);
-  const dispatch = useDispatch();
+  const [deployments, loading] = useDeployments(id!);
 
-  const [loading, toggleLoading] = useBoolean(true);
+  const { openSnackbar } = useSnackbar();
 
-  React.useEffect(() => {
-    const subscription = rancherRepository
-      .deployments(id!)
-      .pipe(
-        finalize(() => {
-          toggleLoading();
-        }),
-      )
-      .subscribe({
-        next: (deployments) => {
-          dispatch(rancherSlice.actions.setDeployments(deployments.data));
-        },
-        error: (error) => {
-          captureException(error);
-        },
-      });
-
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, []);
 
   return (
     <Page className="page">
-      <div className="section-container">
-        <Text>Deployments</Text>
-      </div>
+      <Header title="Deployments" />
       <Spin spinning={loading}>
-        <div className="section-container">
+        <div className="section-container section-top-margin">
           <List>
             {deployments.map((deployment) => (
               <List.Item
                 key={deployment.id}
+                onClick={async () => {
+                  await firstValueFrom(rancherRepository.redeploy(id!, deployment.id, {
+                    ...deployment,
+                    spec: {
+                      ...deployment.spec,
+                      template: {
+                        ...deployment.spec.template,
+                        metadata: {
+                          ...deployment.spec.template.metadata,
+                          annotations: {
+                            'cattle.io/timestamp': moment().toISOString(),
+                            'kubectl.kubernetes.io/restartedAt': moment().toISOString(),
+                          },
+                        }
+                      }
+                    }
+                  }));
+                  openSnackbar({
+                    icon: true,
+                    text: "Deployment restarted",
+                    action: {
+                      text: "OK",
+                      close: true,
+                    },
+                    duration: 3000,
+                  });
+                }}
                 suffix={<Icon icon="zi-auto-solid" />}>
-                <Tag color="#87d068">{deployment.metadata.state.name}</Tag>
+                <EntityState state={deployment.metadata.state.name} />
                 {deployment.metadata.name}
               </List.Item>
             ))}

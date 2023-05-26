@@ -21,7 +21,7 @@ interface Metadata {
   creationTimestamp: string;
   fields: any[]; // Specify the appropriate type for the "fields" array
   generation: number;
-  labels: {[key: string]: string};
+  labels: { [key: string]: string };
   managedFields: FieldsV1[];
   name: string;
   namespace: string;
@@ -63,7 +63,7 @@ interface Spec {
   replicas: number;
   revisionHistoryLimit: number;
   selector: {
-    matchLabels: {[key: string]: string};
+    matchLabels: { [key: string]: string };
   };
   strategy: {
     type: string;
@@ -71,14 +71,17 @@ interface Spec {
   template: {
     metadata: {
       creationTimestamp: string | null;
-      labels: {[key: string]: string};
+      labels: { [key: string]: string };
       name: string;
       namespace: string;
+      annotations: {
+        [key: string]: string;
+      }
     };
     spec: {
       containers: Container[];
       dnsPolicy: string;
-      nodeSelector: {[key: string]: string};
+      nodeSelector: { [key: string]: string };
       priorityClassName: string;
       restartPolicy: string;
       schedulerName: string;
@@ -86,7 +89,7 @@ interface Spec {
       serviceAccount: string;
       serviceAccountName: string;
       terminationGracePeriodSeconds: number;
-      tolerations: {effect: string; key?: string; operator?: string}[];
+      tolerations: { effect: string; key?: string; operator?: string }[];
     };
   };
 }

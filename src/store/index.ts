@@ -5,8 +5,8 @@ import { getStorage, removeStorage, setStorage } from 'zmp-sdk';
 import { RancherDeployment } from '../models/deployment';
 import { RancherCluster } from '../models/rancher';
 import { RancherUserResponse } from '../models/user';
-import { rancherSlice } from './rancher-slice';
-import { userSlice } from './user-slice';
+import { rancherSlice } from './slices/rancher-slice';
+import { userSlice } from './slices/user-slice';
 
 const persistConfig: PersistConfig<Pick<GlobalState['rancher'], 'token'>> = {
   key: 'root',

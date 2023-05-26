@@ -1,24 +1,22 @@
-import {AxiosRequestConfig} from 'axios';
-import {Repository} from 'react3l';
-import {RancherDeployment} from '../models/deployment';
+import { AxiosRequestConfig } from 'axios';
+import { Repository } from 'react3l';
+import { RancherDeployment } from '../models/deployment';
 import {
   RancherCluster,
-  RancherClusterResponse as RancherResponse,
+  RancherClusterResponse as RancherResponse
 } from '../models/rancher';
-import {RancherUserResponse} from '../models/user';
-import {store} from '../store';
+import { RancherUserResponse } from '../models/user';
+import { store } from '../store';
 
 class RancherRepository extends Repository {
   constructor() {
     super();
-
     this.http.interceptors.request.use(this.requestInterceptor);
-
     this.baseURL = 'https://rancher.truesight.asia';
   }
 
-  private readonly requestInterceptor = async (config: AxiosRequestConfig) => {
-    const {token} = store.getState().rancher;
+  private readonly requestInterceptor = async (config: AxiosRequestConfig): Promise<AxiosRequestConfig> => {
+    const { token } = store.getState().rancher;
 
     Object.assign(config.headers, {
       'Content-Type': 'application/json',
@@ -51,6 +49,19 @@ class RancherRepository extends Repository {
         },
       })
       .pipe(Repository.responseDataMapper<RancherUserResponse>());
+  }
+
+  public users() {
+    return this.http
+      .get(`/v3/users`)
+      .pipe(Repository.responseDataMapper<RancherUserResponse>());
+  }
+
+  public redeploy(clusterId: string, deploymentId: string, deployment: RancherDeployment) {
+    return this.http.put(`k8s/clusters/${clusterId}/v1/apps.deployments/${deploymentId}`, deployment)
+      .pipe(
+        Repository.responseDataMapper<RancherDeployment>()
+      )
   }
 }
 

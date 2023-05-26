@@ -1,7 +1,7 @@
 import React from 'react';
 import { BottomNavigation, Icon, Page } from 'zmp-ui';
 import ClusterListPage from './ClusterListPage';
-import RancherForm from './RancherForm';
+import RancherConfigPage from './RancherConfigPage';
 import UserListPage from './UserListPage';
 
 enum Tab {
@@ -14,7 +14,7 @@ const HomePage: React.FunctionComponent = () => {
   const [activeTab, setActiveTab] = React.useState<Tab>(Tab.Clusters);
 
   return (
-    <Page className="page">
+    <Page className="page page-with-bottom-tabs">
       {activeTab === Tab.Clusters && (
         <ClusterListPage />
       )}
@@ -23,7 +23,7 @@ const HomePage: React.FunctionComponent = () => {
       )}
 
       {activeTab === Tab.Settings && (
-        <RancherForm />
+        <RancherConfigPage />
       )}
       <BottomNavigation
         id="bottom-tabs"
