@@ -1,0 +1,62 @@
+{
+  "name": "truesight-master-cloud",
+  "private": true,
+  "version": "1.0.0",
+  "description": "TrueSight Master Cloud",
+  "repository": "",
+  "license": "UNLICENSED",
+  "browserslist": [
+    "Android >= 5",
+    "IOS >= 9.3",
+    "Edge >= 15",
+    "Safari >= 9.1",
+    "Chrome >= 49",
+    "Firefox >= 31",
+    "Samsung >= 5"
+  ],
+  "scripts": {
+    "start": "zmp start",
+    "deploy": "zmp deploy"
+  },
+  "dependencies": {
+    "@reduxjs/toolkit": "^1.9.5",
+    "@sentry/react": "^7.53.1",
+    "antd": "^5.5.1",
+    "axios": "^0.21",
+    "bootstrap": "~4",
+    "i18next": "^22.5.0",
+    "moment": "^2.29.4",
+    "node-rancher2api": "^1.0.1",
+    "prop-types": "^15.8.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-i18next": "^12.3.1",
+    "react-redux": "^8.0.5",
+    "react-router-dom": "^6.11.2",
+    "react3l": "^7.0.0-rc4",
+    "recoil": "^0.7.7",
+    "redux": "^4.2.1",
+    "redux-logger": "^3.0.6",
+    "redux-persist": "^6.0.0",
+    "reflect-metadata": "^0.1.13",
+    "rxjs": "^7.8.1",
+    "zmp-sdk": "^2.27.0",
+    "zmp-ui": "^1.7.0"
+  },
+  "devDependencies": {
+    "@react-native-community/eslint-config": "^3.2.0",
+    "@types/react": "^18.2.7",
+    "@types/react-dom": "^18.2.4",
+    "@types/react-router-dom": "^5.3.3",
+    "@typescript-eslint/eslint-plugin": "^5.59.7",
+    "@typescript-eslint/parser": "^5.59.7",
+    "@vitejs/plugin-react-refresh": "^1.3.6",
+    "cross-env": "^7.0.3",
+    "eslint": "^8.41.0",
+    "postcss-preset-env": "^6.7.0",
+    "prettier": "^2.8.8",
+    "react3l-cli": "^1.1.2",
+    "sass": "^1.62.1",
+    "vite": "^2.6.14"
+  }
+}

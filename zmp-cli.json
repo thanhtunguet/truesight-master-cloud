@@ -1,0 +1,19 @@
+{
+  "cwd": "/Users/tungpt/Development/TrueSight/truesight-master-cloud",
+  "name": "TrueSight Master Cloud",
+  "framework": "react-typescript",
+  "cssPreProcessor": "scss",
+  "includeTailwind": false,
+  "package": "zmp-ui",
+  "stateManagement": "redux",
+  "newProject": true,
+  "template": "single-view",
+  "theming": {
+    "customColor": false,
+    "color": "#007aff",
+    "darkTheme": false,
+    "iconFonts": true,
+    "fillBars": false,
+    "useUiKits": true
+  }
+}
