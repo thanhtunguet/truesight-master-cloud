@@ -25,7 +25,6 @@ export function useDeployments(clusterId: string): [RancherDeployment[], boolean
       .subscribe({
         next: (deployments) => {
           dispatch(rancherSlice.actions.setDeployments(deployments.data));
-          console.log(deployments.data);
         },
         error: (error) => {
           captureException(error);

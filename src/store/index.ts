@@ -16,7 +16,6 @@ const persistConfig: PersistConfig<Pick<GlobalState['rancher'], 'token'>> = {
       return getStorage({
         keys: [key],
       }).then((values) => {
-        console.log(values);
         return values[key];
       });
     },
